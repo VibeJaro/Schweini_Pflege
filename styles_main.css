@@ -217,3 +217,155 @@ body {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
 }
+
+#outfit-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 18;
+  pointer-events: none;
+}
+
+.outfit-item {
+  position: absolute;
+  font-size: 58px;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.dressup-panel {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  width: min(95vw, 420px);
+  padding: 10px;
+  border-radius: 20px;
+  z-index: 140;
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
+}
+
+.dressup-panel.active {
+  display: block;
+}
+
+.dressup-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+  padding: 0 4px;
+}
+
+.dressup-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #be185d;
+}
+
+.dressup-hint {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.dressup-categories {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.dressup-cat-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 7px 12px;
+  background: #f1f5f9;
+  color: #334155;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.dressup-cat-btn.active {
+  background: #ec4899;
+  color: white;
+}
+
+.dressup-tray {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.tray-item {
+  min-width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  border: 2px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+  background: #fdf2f8;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  touch-action: none;
+}
+
+.tray-item.current {
+  border-color: #ec4899;
+  background: #fce7f3;
+}
+
+.remove-all-btn {
+  margin-top: 10px;
+  width: 100%;
+  border: none;
+  border-radius: 14px;
+  padding: 12px;
+  font-weight: 700;
+  background: #ef4444;
+  color: white;
+}
+
+.drag-clone {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  font-size: 52px;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes flyAway {
+  to {
+    transform: translate(var(--dx), var(--dy)) rotate(var(--rot));
+    opacity: 0;
+  }
+}
+
+.outfit-item.fly-away {
+  animation: flyAway 620ms ease-out forwards;
+}
+
+body.dressup-mode .toolbar,
+body.dressup-mode #fur-canvas,
+body.dressup-mode .status-pill,
+body.dressup-mode .game-stats,
+body.dressup-mode .high-score,
+body.dressup-mode #duck-overlay,
+body.dressup-mode .restart-btn {
+  display: none !important;
+}
+
+body.dressup-mode #game-canvas-area {
+  transform: scale(1.02);
+}
+
+@media (max-width: 420px) {
+  .dressup-title { font-size: 16px; }
+  .dressup-hint { font-size: 10px; }
+  .tray-item { min-width: 50px; height: 50px; font-size: 30px; }
+}

@@ -8,6 +8,11 @@ const btnSponge = document.getElementById('btn-sponge');
 const btnHose = document.getElementById('btn-hose');
 const btnDryer = document.getElementById('btn-dryer');
 const duck = document.getElementById('duck-overlay');
+const outfitLayer = document.getElementById('outfit-layer');
+const dressupPanel = document.getElementById('dressup-panel');
+const dressupCategories = document.getElementById('dressup-categories');
+const dressupTray = document.getElementById('dressup-tray');
+const removeAllBtn = document.getElementById('remove-all-btn');
 
 const audio = new AudioManager();
 
@@ -36,6 +41,24 @@ const config = {
   maxParticles: 220
 };
 
+const wardrobe = {
+  hats: { label: 'Kopf', items: ['🤠', '👑', '🧢'] },
+  glasses: { label: 'Brillen', items: ['🕶️', '🤓', '🥽'] },
+  scarves: { label: 'Schals', items: ['🧣', '🎀', '🪢'] },
+  tops: { label: 'Oberteile', items: ['👕', '🦺', '🥋'] },
+  pants: { label: 'Hosen', items: ['👖', '🩳', '🩲'] },
+  shoes: { label: 'Schuhe', items: ['👟', '🥾', '🩰'] }
+};
+
+const slots = {
+  hats: { x: 180, y: 44, size: 62 },
+  glasses: { x: 180, y: 128, size: 56 },
+  scarves: { x: 180, y: 198, size: 56 },
+  tops: { x: 180, y: 264, size: 78 },
+  pants: { x: 180, y: 338, size: 74 },
+  shoes: { x: 180, y: 418, size: 62 }
+};
+
 let hairs = [];
 let particles = [];
 let pointer = { x: -100, y: -100, isDown: false };
@@ -44,8 +67,12 @@ let stats = { dirt: 100, wetness: 0, soap: 0 };
 let dirtPatches = [];
 let time = 0;
 let gameCompleted = false;
+let dressupUnlocked = false;
 let noseTaps = 0;
 let lastNoseTap = 0;
+let selectedCategory = 'hats';
+let dragState = null;
+const wornItems = Object.fromEntries(Object.keys(wardrobe).map((key) => [key, null]));
 
 function rotatePoint(x, y, ox, oy, deg) {
   const rad = (deg * Math.PI) / 180;
@@ -317,6 +344,149 @@ function updateToolUI(tool) {
   }
 }
 
+function renderWornItems() {
+  if (!outfitLayer) return;
+  outfitLayer.innerHTML = '';
+  for (const [category, item] of Object.entries(wornItems)) {
+    if (!item) continue;
+    const slot = slots[category];
+    const el = document.createElement('div');
+    el.className = 'outfit-item';
+    el.style.left = `${slot.x}px`;
+    el.style.top = `${slot.y}px`;
+    el.style.fontSize = `${slot.size}px`;
+    el.dataset.category = category;
+    el.textContent = item;
+    outfitLayer.appendChild(el);
+  }
+  refreshTray();
+}
+
+function equipItem(category, symbol) {
+  wornItems[category] = symbol;
+  renderWornItems();
+}
+
+function cycleCategory(category) {
+  const set = wardrobe[category].items;
+  const current = wornItems[category];
+  const index = current ? set.indexOf(current) : -1;
+  const next = set[(index + 1) % set.length];
+  equipItem(category, next);
+}
+
+function removeAllOutfit() {
+  const elements = [...outfitLayer.querySelectorAll('.outfit-item')];
+  elements.forEach((el) => {
+    const dx = `${(Math.random() - 0.5) * 420}px`;
+    const dy = `${-130 - Math.random() * 240}px`;
+    const rot = `${(Math.random() - 0.5) * 540}deg`;
+    el.style.setProperty('--dx', dx);
+    el.style.setProperty('--dy', dy);
+    el.style.setProperty('--rot', rot);
+    el.classList.add('fly-away');
+  });
+
+  setTimeout(() => {
+    Object.keys(wornItems).forEach((category) => { wornItems[category] = null; });
+    renderWornItems();
+  }, 640);
+}
+
+function getSlotFromPoint(clientX, clientY) {
+  const rect = gameArea.getBoundingClientRect();
+  const x = clientX - rect.left;
+  const y = clientY - rect.top;
+  return Object.entries(slots).find(([, slot]) => dist(x, y, slot.x, slot.y) <= slot.size * 0.45)?.[0] || null;
+}
+
+function onTrayPointerDown(e) {
+  const item = e.currentTarget;
+  dragState = {
+    category: item.dataset.category,
+    symbol: item.dataset.symbol,
+    clone: document.createElement('div')
+  };
+  dragState.clone.className = 'drag-clone';
+  dragState.clone.textContent = dragState.symbol;
+  document.body.appendChild(dragState.clone);
+  dragState.clone.style.left = `${e.clientX}px`;
+  dragState.clone.style.top = `${e.clientY}px`;
+  item.setPointerCapture(e.pointerId);
+}
+
+function onTrayPointerMove(e) {
+  if (!dragState) return;
+  dragState.clone.style.left = `${e.clientX}px`;
+  dragState.clone.style.top = `${e.clientY}px`;
+}
+
+function finishDrag(clientX, clientY, fallbackCategory, fallbackSymbol) {
+  if (!dragState) {
+    equipItem(fallbackCategory, fallbackSymbol);
+    return;
+  }
+
+  const slotHit = getSlotFromPoint(clientX, clientY);
+  if (slotHit === dragState.category) {
+    equipItem(dragState.category, dragState.symbol);
+  }
+
+  dragState.clone.remove();
+  dragState = null;
+}
+
+function onTrayPointerUp(e) {
+  const item = e.currentTarget;
+  finishDrag(e.clientX, e.clientY, item.dataset.category, item.dataset.symbol);
+}
+
+function refreshTray() {
+  if (!dressupTray) return;
+  dressupTray.innerHTML = '';
+  wardrobe[selectedCategory].items.forEach((symbol) => {
+    const btn = document.createElement('button');
+    btn.className = 'tray-item';
+    if (wornItems[selectedCategory] === symbol) btn.classList.add('current');
+    btn.textContent = symbol;
+    btn.dataset.category = selectedCategory;
+    btn.dataset.symbol = symbol;
+    btn.addEventListener('pointerdown', onTrayPointerDown);
+    btn.addEventListener('pointermove', onTrayPointerMove);
+    btn.addEventListener('pointerup', onTrayPointerUp);
+    btn.addEventListener('pointercancel', () => finishDrag(-999, -999, selectedCategory, symbol));
+    btn.addEventListener('click', () => equipItem(selectedCategory, symbol));
+    dressupTray.appendChild(btn);
+  });
+}
+
+function renderCategories() {
+  if (!dressupCategories) return;
+  dressupCategories.innerHTML = '';
+  Object.entries(wardrobe).forEach(([key, data]) => {
+    const btn = document.createElement('button');
+    btn.className = `dressup-cat-btn${key === selectedCategory ? ' active' : ''}`;
+    btn.textContent = data.label;
+    btn.addEventListener('click', () => {
+      selectedCategory = key;
+      renderCategories();
+      refreshTray();
+    });
+    dressupCategories.appendChild(btn);
+  });
+}
+
+function unlockDressupMode() {
+  if (dressupUnlocked) return;
+  dressupUnlocked = true;
+  document.body.classList.add('dressup-mode');
+  dressupPanel.classList.add('active');
+  const statusText = document.getElementById('status-text');
+  statusText.textContent = 'Anzieh-Party!';
+  renderCategories();
+  refreshTray();
+}
+
 function updateUI() {
   const progress = Math.floor((1 - stats.dirt) * 100);
   const statusText = document.getElementById('status-text');
@@ -337,7 +507,7 @@ function updateUI() {
     gameCompleted = true;
     statusText.textContent = 'Kuschelweich!';
     audio.playHappy();
-    document.getElementById('restart-btn').style.display = 'block';
+    unlockDressupMode();
 
     const currentScore = Math.floor((1 - stats.dirt) * 100) - Math.floor(stats.wetness * 20);
     const highScore = Number(localStorage.getItem('schweini-highscore') || 0);
@@ -358,6 +528,7 @@ function updatePointerFromEvent(e) {
 
 function attachPointerHandlers() {
   gameArea.addEventListener('pointerdown', (e) => {
+    if (dressupUnlocked) return;
     e.preventDefault();
     audio.init();
     pointer.isDown = true;
@@ -365,6 +536,7 @@ function attachPointerHandlers() {
   });
 
   gameArea.addEventListener('pointermove', (e) => {
+    if (dressupUnlocked) return;
     e.preventDefault();
     updatePointerFromEvent(e);
     pointer.isDown = (e.buttons & 1) === 1 || e.pointerType === 'touch';
@@ -412,7 +584,7 @@ function loop() {
     const dy = pointer.y - hair.y;
     const d = Math.hypot(dx, dy);
 
-    if (pointer.isDown && d < 48) {
+    if (!dressupUnlocked && pointer.isDown && d < 48) {
       interacted++;
       if (currentTool === 'sponge') {
         hair.dirt = Math.max(0, hair.dirt - 0.045);
@@ -468,7 +640,7 @@ function loop() {
     totalSoap += hair.soap;
   }
 
-  if (pointer.isDown && interacted > 0) {
+  if (!dressupUnlocked && pointer.isDown && interacted > 0) {
     audio.syncTool(currentTool, true);
     if (currentTool === 'sponge') {
       spawnParticle(pointer.x, pointer.y, 'bubble', 2);
@@ -500,11 +672,25 @@ function loop() {
   requestAnimationFrame(loop);
 }
 
+function initDressupHandlers() {
+  gameArea.addEventListener('click', (e) => {
+    if (!dressupUnlocked) return;
+    const category = getSlotFromPoint(e.clientX, e.clientY);
+    if (category) cycleCategory(category);
+  });
+
+  removeAllBtn.addEventListener('click', () => {
+    audio.init();
+    removeAllOutfit();
+  });
+}
+
 function init() {
   resize();
   createDirtPatches();
   spawnHairs();
   attachPointerHandlers();
+  initDressupHandlers();
 
   btnSponge.addEventListener('click', () => { audio.init(); updateToolUI('sponge'); });
   btnHose.addEventListener('click', () => { audio.init(); updateToolUI('hose'); });
