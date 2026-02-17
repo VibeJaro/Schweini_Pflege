@@ -63,6 +63,8 @@
     <div id="game-canvas-area">
       <div class="pig-shadow"></div>
 
+      <div id="outfit-layer" aria-hidden="true"></div>
+
       <svg id="duck-overlay" viewBox="0 0 60 60" aria-label="Ente">
         <path d="M45,25 Q55,15 50,5 Q52,20 45,25" fill="#FFA500"/>
         <ellipse id="duck-body" cx="30" cy="30" rx="20" ry="15" fill="#FFD700"/>
@@ -114,6 +116,16 @@
       <button class="tool-btn active sponge" id="btn-sponge" aria-label="Seife"><i class="fas fa-soap"></i><span>Seife</span></button>
       <button class="tool-btn hose" id="btn-hose" aria-label="Spülen"><i class="fas fa-shower"></i><span>Spülen</span></button>
       <button class="tool-btn dryer" id="btn-dryer" aria-label="Trocknen"><i class="fas fa-wind"></i><span>Trocknen</span></button>
+    </div>
+
+    <div id="dressup-panel" class="dressup-panel" aria-live="polite">
+      <div class="dressup-header">
+        <span class="dressup-title">Style-Schrank</span>
+        <span class="dressup-hint">Ziehen oder tippen zum Wechseln</span>
+      </div>
+      <div id="dressup-categories" class="dressup-categories"></div>
+      <div id="dressup-tray" class="dressup-tray"></div>
+      <button id="remove-all-btn" class="remove-all-btn">Alles ausziehen 💥</button>
     </div>
   </div>
 
