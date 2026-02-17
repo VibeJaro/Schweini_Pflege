@@ -42,12 +42,60 @@ const config = {
 };
 
 const wardrobe = {
-  hats: { label: 'Kopf', items: ['🤠', '👑', '🧢'] },
-  glasses: { label: 'Brillen', items: ['🕶️', '🤓', '🥽'] },
-  scarves: { label: 'Schals', items: ['🧣', '🎀', '🪢'] },
-  tops: { label: 'Oberteile', items: ['👕', '🦺', '🥋'] },
-  pants: { label: 'Hosen', items: ['👖', '🩳', '🩲'] },
-  shoes: { label: 'Schuhe', items: ['👟', '🥾', '🩰'] }
+  hats: {
+    label: 'Kopf',
+    part: 'head',
+    items: [
+      { id: 'hut-wide', trayLabel: 'Hut', svg: '<ellipse cx="180" cy="82" rx="64" ry="12" fill="#6b3f2a"/><path d="M132 82 L146 40 H214 L228 82 Z" fill="#8b5a3c"/><rect x="154" y="56" width="52" height="10" rx="5" fill="#ef4444"/>' },
+      { id: 'crown', trayLabel: 'Krone', svg: '<path d="M126 88 L138 46 L162 68 L180 40 L198 68 L222 46 L234 88 Z" fill="#facc15" stroke="#eab308" stroke-width="4"/><circle cx="150" cy="60" r="6" fill="#60a5fa"/><circle cx="180" cy="50" r="6" fill="#f472b6"/><circle cx="210" cy="60" r="6" fill="#34d399"/>' },
+      { id: 'cap', trayLabel: 'Cap', svg: '<path d="M132 90 C130 66 152 46 180 46 C208 46 232 66 228 90 Z" fill="#2563eb"/><path d="M180 90 C196 90 216 94 232 104 C214 108 194 110 172 108 Z" fill="#1d4ed8"/>' }
+    ]
+  },
+  glasses: {
+    label: 'Brillen',
+    part: 'head',
+    items: [
+      { id: 'shades', trayLabel: 'Shades', svg: '<rect x="132" y="122" width="42" height="20" rx="10" fill="#111827"/><rect x="186" y="122" width="42" height="20" rx="10" fill="#111827"/><rect x="174" y="129" width="12" height="6" fill="#374151"/><path d="M132 130 L124 126" stroke="#374151" stroke-width="4"/><path d="M228 130 L236 126" stroke="#374151" stroke-width="4"/>' },
+      { id: 'round', trayLabel: 'Rund', svg: '<circle cx="154" cy="132" r="16" fill="none" stroke="#1d4ed8" stroke-width="4"/><circle cx="206" cy="132" r="16" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M170 132 H190" stroke="#1d4ed8" stroke-width="4"/><path d="M138 121 L128 114" stroke="#1d4ed8" stroke-width="3"/><path d="M222 121 L232 114" stroke="#1d4ed8" stroke-width="3"/>' },
+      { id: 'goggles', trayLabel: 'Schutz', svg: '<rect x="124" y="118" width="112" height="30" rx="15" fill="#22d3ee" fill-opacity="0.35" stroke="#0891b2" stroke-width="4"/><circle cx="156" cy="133" r="12" fill="#67e8f9"/><circle cx="204" cy="133" r="12" fill="#67e8f9"/><path d="M124 133 H108 M236 133 H252" stroke="#0f766e" stroke-width="4"/>' }
+    ]
+  },
+  scarves: {
+    label: 'Schals',
+    part: 'body',
+    items: [
+      { id: 'scarf-classic', trayLabel: 'Schal', svg: '<ellipse cx="180" cy="204" rx="54" ry="20" fill="#dc2626"/><path d="M158 214 L176 214 L168 286 L146 286 Z" fill="#ef4444"/><path d="M186 214 H204 L214 278 H192 Z" fill="#b91c1c"/>' },
+      { id: 'bowtie', trayLabel: 'Schleife', svg: '<ellipse cx="154" cy="206" rx="24" ry="16" fill="#f472b6"/><ellipse cx="206" cy="206" rx="24" ry="16" fill="#f472b6"/><circle cx="180" cy="206" r="10" fill="#db2777"/>' },
+      { id: 'rope', trayLabel: 'Kordel', svg: '<ellipse cx="180" cy="206" rx="52" ry="18" fill="none" stroke="#a16207" stroke-width="10"/><path d="M165 216 C168 236 156 258 168 284" stroke="#a16207" stroke-width="8" fill="none"/><path d="M196 216 C198 242 214 256 202 282" stroke="#a16207" stroke-width="8" fill="none"/>' }
+    ]
+  },
+  tops: {
+    label: 'Oberteile',
+    part: 'body',
+    items: [
+      { id: 'shirt', trayLabel: 'Shirt', svg: '<path d="M106 228 L134 206 H226 L254 228 L238 324 H122 Z" fill="#38bdf8"/><rect x="168" y="206" width="24" height="32" fill="#e0f2fe"/>' },
+      { id: 'vest', trayLabel: 'Weste', svg: '<path d="M120 224 L142 212 H218 L240 224 L226 330 H134 Z" fill="#f97316"/><path d="M178 212 V330" stroke="#fb923c" stroke-width="8"/><circle cx="180" cy="250" r="5" fill="#1f2937"/><circle cx="180" cy="278" r="5" fill="#1f2937"/>' },
+      { id: 'kimono', trayLabel: 'Kimono', svg: '<path d="M108 224 L146 202 H214 L252 224 L238 334 H122 Z" fill="#a855f7"/><path d="M146 202 L182 274 L214 202" stroke="#f3e8ff" stroke-width="8" fill="none"/><rect x="172" y="258" width="16" height="72" fill="#7e22ce"/>' }
+    ]
+  },
+  pants: {
+    label: 'Hosen',
+    part: 'body',
+    items: [
+      { id: 'jeans', trayLabel: 'Jeans', svg: '<path d="M132 304 H228 L220 392 H192 L184 340 H176 L168 392 H140 Z" fill="#2563eb"/><rect x="164" y="304" width="32" height="16" fill="#60a5fa"/>' },
+      { id: 'shorts', trayLabel: 'Shorts', svg: '<path d="M128 306 H232 L226 358 H190 L184 336 H176 L170 358 H134 Z" fill="#f97316"/><rect x="160" y="306" width="40" height="12" fill="#fdba74"/>' },
+      { id: 'striped', trayLabel: 'Gestreift', svg: '<path d="M130 306 H230 L224 380 H192 L184 344 H176 L168 380 H136 Z" fill="#f9a8d4"/><path d="M146 306 V380 M164 306 V380 M182 306 V380 M200 306 V380 M218 306 V380" stroke="#be185d" stroke-width="6"/>' }
+    ]
+  },
+  shoes: {
+    label: 'Schuhe',
+    part: 'legs',
+    items: [
+      { id: 'sneakers', trayLabel: 'Sneaker', svg: '<path d="M82 396 H152 L166 418 H92 Z" fill="#ffffff" stroke="#2563eb" stroke-width="4"/><path d="M100 406 H150" stroke="#93c5fd" stroke-width="3"/>' },
+      { id: 'boots', trayLabel: 'Stiefel', svg: '<path d="M92 372 H146 V416 H88 Z" fill="#7c3f00"/><rect x="88" y="408" width="62" height="12" rx="6" fill="#5b2d00"/>' },
+      { id: 'ballet', trayLabel: 'Ballerina', svg: '<ellipse cx="124" cy="410" rx="38" ry="12" fill="#f9a8d4"/><path d="M94 410 C108 396 140 396 154 410" stroke="#ec4899" stroke-width="3" fill="none"/>' }
+    ]
+  }
 };
 
 const slots = {
@@ -73,6 +121,10 @@ let lastNoseTap = 0;
 let selectedCategory = 'hats';
 let dragState = null;
 const wornItems = Object.fromEntries(Object.keys(wardrobe).map((key) => [key, null]));
+
+function renderTrayIcon(item) {
+  return `<svg class="tray-icon" viewBox="0 0 360 500" aria-hidden="true">${item.svg}</svg>`;
+}
 
 function rotatePoint(x, y, ox, oy, deg) {
   const rad = (deg * Math.PI) / 180;
@@ -212,6 +264,21 @@ function updateAnimation() {
     if (name === 'body') el.style.transform += ` scale(${breatheScale})`;
   });
 
+  const outfitTransformMap = {
+    head: ['outfit-head'],
+    body: ['outfit-body'],
+    legL: ['outfit-leg-l'],
+    legR: ['outfit-leg-r']
+  };
+
+  Object.entries(outfitTransformMap).forEach(([partName, ids]) => {
+    const partEl = document.getElementById(parts[partName].id);
+    ids.forEach((id) => {
+      const outfitEl = document.getElementById(id);
+      if (outfitEl && partEl) outfitEl.style.transform = partEl.style.transform;
+    });
+  });
+
   for (const hair of hairs) {
     const t = getWorldTransform(hair.part);
     const localX = hair.localFromPivotX;
@@ -346,33 +413,33 @@ function updateToolUI(tool) {
 
 function renderWornItems() {
   if (!outfitLayer) return;
-  outfitLayer.innerHTML = '';
-  for (const [category, item] of Object.entries(wornItems)) {
-    if (!item) continue;
-    const slot = slots[category];
-    const el = document.createElement('div');
-    el.className = 'outfit-item';
-    el.style.left = `${slot.x}px`;
-    el.style.top = `${slot.y}px`;
-    el.style.fontSize = `${slot.size}px`;
-    el.dataset.category = category;
-    el.textContent = item;
-    outfitLayer.appendChild(el);
-  }
+  const hats = wornItems.hats ? `<g class="outfit-item" data-category="hats">${wornItems.hats.svg}</g>` : '';
+  const glasses = wornItems.glasses ? `<g class="outfit-item" data-category="glasses">${wornItems.glasses.svg}</g>` : '';
+  const scarves = wornItems.scarves ? `<g class="outfit-item" data-category="scarves">${wornItems.scarves.svg}</g>` : '';
+  const tops = wornItems.tops ? `<g class="outfit-item" data-category="tops">${wornItems.tops.svg}</g>` : '';
+  const pants = wornItems.pants ? `<g class="outfit-item" data-category="pants">${wornItems.pants.svg}</g>` : '';
+  const shoes = wornItems.shoes ? `<g class="outfit-item" data-category="shoes">${wornItems.shoes.svg}</g>` : '';
+
+  outfitLayer.innerHTML = `
+    <g id="outfit-head" transform-origin="180 190">${hats}${glasses}</g>
+    <g id="outfit-body" transform-origin="180 300">${scarves}${tops}${pants}</g>
+    <g id="outfit-leg-l" transform-origin="120 340">${shoes}</g>
+    <g id="outfit-leg-r" transform-origin="240 340"><g transform="translate(120 0)">${shoes}</g></g>
+  `;
   refreshTray();
 }
 
-function equipItem(category, symbol) {
-  wornItems[category] = symbol;
+function equipItem(category, itemId) {
+  wornItems[category] = wardrobe[category].items.find((item) => item.id === itemId) || null;
   renderWornItems();
 }
 
 function cycleCategory(category) {
   const set = wardrobe[category].items;
-  const current = wornItems[category];
-  const index = current ? set.indexOf(current) : -1;
+  const current = wornItems[category]?.id;
+  const index = current ? set.findIndex((item) => item.id === current) : -1;
   const next = set[(index + 1) % set.length];
-  equipItem(category, next);
+  equipItem(category, next.id);
 }
 
 function removeAllOutfit() {
@@ -404,11 +471,11 @@ function onTrayPointerDown(e) {
   const item = e.currentTarget;
   dragState = {
     category: item.dataset.category,
-    symbol: item.dataset.symbol,
+    itemId: item.dataset.itemId,
     clone: document.createElement('div')
   };
   dragState.clone.className = 'drag-clone';
-  dragState.clone.textContent = dragState.symbol;
+  dragState.clone.innerHTML = item.innerHTML;
   document.body.appendChild(dragState.clone);
   dragState.clone.style.left = `${e.clientX}px`;
   dragState.clone.style.top = `${e.clientY}px`;
@@ -421,15 +488,15 @@ function onTrayPointerMove(e) {
   dragState.clone.style.top = `${e.clientY}px`;
 }
 
-function finishDrag(clientX, clientY, fallbackCategory, fallbackSymbol) {
+function finishDrag(clientX, clientY, fallbackCategory, fallbackItemId) {
   if (!dragState) {
-    equipItem(fallbackCategory, fallbackSymbol);
+    equipItem(fallbackCategory, fallbackItemId);
     return;
   }
 
   const slotHit = getSlotFromPoint(clientX, clientY);
   if (slotHit === dragState.category) {
-    equipItem(dragState.category, dragState.symbol);
+    equipItem(dragState.category, dragState.itemId);
   }
 
   dragState.clone.remove();
@@ -438,24 +505,25 @@ function finishDrag(clientX, clientY, fallbackCategory, fallbackSymbol) {
 
 function onTrayPointerUp(e) {
   const item = e.currentTarget;
-  finishDrag(e.clientX, e.clientY, item.dataset.category, item.dataset.symbol);
+  finishDrag(e.clientX, e.clientY, item.dataset.category, item.dataset.itemId);
 }
 
 function refreshTray() {
   if (!dressupTray) return;
   dressupTray.innerHTML = '';
-  wardrobe[selectedCategory].items.forEach((symbol) => {
+  wardrobe[selectedCategory].items.forEach((item) => {
     const btn = document.createElement('button');
     btn.className = 'tray-item';
-    if (wornItems[selectedCategory] === symbol) btn.classList.add('current');
-    btn.textContent = symbol;
+    if (wornItems[selectedCategory]?.id === item.id) btn.classList.add('current');
+    btn.innerHTML = renderTrayIcon(item);
+    btn.setAttribute('aria-label', item.trayLabel);
     btn.dataset.category = selectedCategory;
-    btn.dataset.symbol = symbol;
+    btn.dataset.itemId = item.id;
     btn.addEventListener('pointerdown', onTrayPointerDown);
     btn.addEventListener('pointermove', onTrayPointerMove);
     btn.addEventListener('pointerup', onTrayPointerUp);
-    btn.addEventListener('pointercancel', () => finishDrag(-999, -999, selectedCategory, symbol));
-    btn.addEventListener('click', () => equipItem(selectedCategory, symbol));
+    btn.addEventListener('pointercancel', () => finishDrag(-999, -999, selectedCategory, item.id));
+    btn.addEventListener('click', () => equipItem(selectedCategory, item.id));
     dressupTray.appendChild(btn);
   });
 }
