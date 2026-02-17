@@ -108,13 +108,24 @@
         </g>
       </svg>
       <canvas id="fur-canvas"></canvas>
+      <div id="dress-layer" aria-label="Schwein anziehen"></div>
     </div>
 
-    <div class="toolbar">
+    <div class="toolbar" id="cleaning-toolbar">
       <button class="tool-btn active sponge" id="btn-sponge" aria-label="Seife"><i class="fas fa-soap"></i><span>Seife</span></button>
       <button class="tool-btn hose" id="btn-hose" aria-label="Spülen"><i class="fas fa-shower"></i><span>Spülen</span></button>
       <button class="tool-btn dryer" id="btn-dryer" aria-label="Trocknen"><i class="fas fa-wind"></i><span>Trocknen</span></button>
     </div>
+
+    <section id="dress-menu" class="dress-menu" aria-label="Anzieh-Menü">
+      <div class="dress-menu-top">
+        <strong>🎭 Styling-Salon</strong>
+        <button id="clear-outfit-btn" type="button">Alles abschütteln 💥</button>
+      </div>
+      <div class="category-tabs" id="category-tabs"></div>
+      <div class="item-scroller" id="item-scroller"></div>
+      <p class="dress-help">Tippe ein angezogenes Teil zum Wechseln. Ziehe neue Teile aufs Schwein.</p>
+    </section>
   </div>
 
   <script type="module" src="./game.js"></script>

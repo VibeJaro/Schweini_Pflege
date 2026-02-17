@@ -62,7 +62,8 @@ body {
 }
 
 #pig-structure-svg,
-#fur-canvas {
+#fur-canvas,
+#dress-layer {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -71,6 +72,28 @@ body {
 
 #pig-structure-svg { z-index: 1; transition: filter 0.2s; }
 #fur-canvas { z-index: 5; }
+#dress-layer { z-index: 6; pointer-events: none; }
+
+.outfit-piece {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #111827;
+  font-weight: 600;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.6);
+  pointer-events: auto;
+  touch-action: none;
+  transition: transform 0.15s ease;
+}
+
+.outfit-piece .emoji { font-size: 24px; }
+.outfit-piece .mini-label { font-size: 11px; margin-left: 4px; }
+.outfit-piece.flying {
+  transition: transform 0.8s ease-out, opacity 0.8s;
+  opacity: 0;
+}
 
 .toolbar {
   position: absolute;
@@ -209,6 +232,85 @@ body {
 
 #duck-body { animation: duckWaddle 1s ease-in-out infinite; transform-origin: 30px 30px; }
 
+.dress-menu {
+  position: absolute;
+  bottom: 14px;
+  width: min(94vw, 420px);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 10px 25px rgba(17, 24, 39, 0.2);
+  z-index: 180;
+  display: none;
+}
+
+.dress-menu-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+#clear-outfit-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  background: #fee2e2;
+  color: #b91c1c;
+  font-weight: 700;
+}
+
+.category-tabs,
+.item-scroller {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.category-tabs::-webkit-scrollbar,
+.item-scroller::-webkit-scrollbar { display: none; }
+
+.category-tab {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
+  background: #e2e8f0;
+  color: #334155;
+  font-weight: 700;
+}
+
+.category-tab.active { background: #ec4899; color: white; }
+
+.item-scroller { padding: 8px 0 2px; }
+.item-card {
+  flex: 0 0 auto;
+  min-width: 100px;
+  border-radius: 14px;
+  padding: 8px;
+  border: 2px solid transparent;
+  background: #f8fafc;
+  text-align: center;
+}
+.item-card .card-icon { font-size: 28px; }
+.item-card .card-title { font-size: 12px; color: #334155; margin-top: 4px; }
+.item-card:active { transform: scale(0.98); }
+
+.dress-help { margin: 6px 0 0; font-size: 11px; color: #475569; text-align: center; }
+
+.dragging-item {
+  position: fixed;
+  pointer-events: none;
+  z-index: 999;
+  transform: translate(-50%, -50%);
+  background: white;
+  border: 2px dashed #ec4899;
+  padding: 6px 10px;
+  border-radius: 12px;
+}
+
 @keyframes duckBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-5px); }
@@ -216,4 +318,10 @@ body {
 @keyframes duckWaddle {
   0%, 100% { transform: rotate(-5deg); }
   50% { transform: rotate(5deg); }
+}
+
+@media (max-width: 520px) {
+  #game-canvas-area { width: min(96vw, 360px); height: min(62vh, 500px); }
+  .toolbar { bottom: 6px; }
+  .tool-btn { width: 60px; height: 60px; }
 }
